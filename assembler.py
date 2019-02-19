@@ -37,38 +37,38 @@ translation = {
     'mov d c': 0x15,
 
     'jmpa {label}': 0x20, 
-    'jmpa <= a':    0x21, 
-    'jmpa < a':     0x22, 
-    'jmpa = a':     0x23, 
-    'jmpa > a':     0x24, 
-    'jmpa >= a':    0x25, 
-    'jmpa <= c':    0x26, 
-    'jmpa < c':     0x27, 
-    'jmpa = c':     0x28, 
-    'jmpa > c':     0x29, 
-    'jmpa >= c':    0x2a, 
-    'jmpa <= d':    0x2b, 
-    'jmpa < d':     0x2c, 
-    'jmpa = d':     0x2d, 
-    'jmpa > d':     0x2e, 
-    'jmpa >= d':    0x2f, 
+    'jmpa <= a {label}':    0x21, 
+    'jmpa < a {label}':     0x22, 
+    'jmpa = a {label}':     0x23, 
+    'jmpa > a {label}':     0x24, 
+    'jmpa >= a {label}':    0x25, 
+    'jmpa <= c {label}':    0x26, 
+    'jmpa < c {label}':     0x27, 
+    'jmpa = c {label}':     0x28, 
+    'jmpa > c {label}':     0x29, 
+    'jmpa >= c {label}':    0x2a, 
+    'jmpa <= d {label}':    0x2b, 
+    'jmpa < d {label}':     0x2c, 
+    'jmpa = d {label}':     0x2d, 
+    'jmpa > d {label}':     0x2e, 
+    'jmpa >= d {label}':    0x2f, 
 
-    'jmpr {label}': 0x30, 
-    'jmpr <= a':    0x31, 
-    'jmpr < a':     0x32, 
-    'jmpr = a':     0x33, 
-    'jmpr > a':     0x34, 
-    'jmpr >= a':    0x35, 
-    'jmpr <= c':    0x36, 
-    'jmpr < c':     0x37, 
-    'jmpr = c':     0x38, 
-    'jmpr > c':     0x39, 
-    'jmpr >= c':    0x3a, 
-    'jmpr <= d':    0x3b, 
-    'jmpr < d':     0x3c, 
-    'jmpr = d':     0x3d, 
-    'jmpr > d':     0x3e, 
-    'jmpr >= d':    0x3f, 
+    'jmpr {number}': 0x30, 
+    'jmpr <= a {number}':    0x31, 
+    'jmpr < a {number}':     0x32, 
+    'jmpr = a {number}':     0x33, 
+    'jmpr > a {number}':     0x34, 
+    'jmpr >= a {number}':    0x35, 
+    'jmpr <= c {number}':    0x36, 
+    'jmpr < c {number}':     0x37, 
+    'jmpr = c {number}':     0x38, 
+    'jmpr > c {number}':     0x39, 
+    'jmpr >= c {number}':    0x3a, 
+    'jmpr <= d {number}':    0x3b, 
+    'jmpr < d {number}':     0x3c, 
+    'jmpr = d {number}':     0x3d, 
+    'jmpr > d {number}':     0x3e, 
+    'jmpr >= d {number}':    0x3f, 
 
     'opp 0':   0x40,
     'opp 1':   0x41,
@@ -126,12 +126,14 @@ def opp_to_hex(line):
         return [translation[line]]
 
     for instruction in translation_stage_two:
-        ins_temp = instruction.replace('{label}','(.+)')
+        match_whole_ins = '^'+instruction+'$'
+        ins_temp = match_whole_ins.replace('{label}','([^ ]+)')
         match = re.match(ins_temp, line)
         if (match is not None):
             return [translation[instruction], *match.groups()]
 
-        ins_temp = instruction.replace('{number}','([0-9]+)')
+        ins_temp = match_whole_ins.replace('{number}','([0-9]+)')
+        ins_temp = match_whole_ins.replace('{number}','([0-9]+)')
         match = re.match(ins_temp, line)
         if (match is not None):
             global offset
@@ -164,6 +166,13 @@ def parse(input_file, output_file):
                 return
             final.extend(hex_op)
 
+    #for x in final:
+    #    if isinstance(x, int):
+    #        print(hex(int(x)), end=' ')
+    #    else:
+    #        print(x, end=' ')
+    #print()
+			
     file_output = ''
     for ins in final:
         if isinstance(ins, str):
