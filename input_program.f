@@ -1,10 +1,10 @@
 load rom c 42
 :start
 in a
-opp a-b
-jmpa < a less
-jmpa > a greater
-jmpa = a equal
+cmp a c
+jmpa < less
+jmpa > greater
+jmpa = equal
 :less
 opp -1
 jmpa end
