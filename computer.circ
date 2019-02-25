@@ -501,8 +501,7 @@ end TCL_Generic;
     <comp lib="4" loc="(200,390)" name="ROM">
       <a name="addrWidth" val="16"/>
       <a name="contents">addr/data: 16 8
-70 10 71 24 5d a0 21 30
-27 37
+30 0 2 30 ff fe 30
 </a>
       <a name="label" val="pc_rom"/>
     </comp>
@@ -1492,7 +1491,6 @@ end TCL_Generic;
     <wire from="(540,90)" to="(600,90)"/>
     <wire from="(560,150)" to="(620,150)"/>
     <wire from="(700,290)" to="(760,290)"/>
-    <wire from="(930,90)" to="(930,120)"/>
     <wire from="(770,50)" to="(770,80)"/>
     <wire from="(670,70)" to="(670,90)"/>
     <wire from="(760,40)" to="(760,60)"/>
@@ -1571,6 +1569,7 @@ end TCL_Generic;
     <wire from="(760,40)" to="(840,40)"/>
     <wire from="(670,130)" to="(680,130)"/>
     <wire from="(660,160)" to="(670,160)"/>
+    <wire from="(930,70)" to="(930,120)"/>
     <wire from="(260,430)" to="(330,430)"/>
     <wire from="(550,170)" to="(560,170)"/>
     <wire from="(980,130)" to="(1030,130)"/>
@@ -1594,6 +1593,7 @@ end TCL_Generic;
     <wire from="(930,120)" to="(940,120)"/>
     <wire from="(450,230)" to="(900,230)"/>
     <wire from="(670,40)" to="(750,40)"/>
+    <wire from="(920,70)" to="(930,70)"/>
     <wire from="(700,50)" to="(710,50)"/>
     <wire from="(600,190)" to="(610,190)"/>
     <comp lib="0" loc="(530,170)" name="Pin">
@@ -1643,10 +1643,6 @@ end TCL_Generic;
     </comp>
     <comp lib="2" loc="(910,190)" name="BitSelector">
       <a name="width" val="11"/>
-    </comp>
-    <comp lib="0" loc="(930,90)" name="Pin">
-      <a name="label" val="OE"/>
-      <a name="radix" val="10unsigned"/>
     </comp>
     <comp lib="0" loc="(530,210)" name="Pin">
       <a name="label" val="SIN"/>
@@ -1775,6 +1771,10 @@ end TCL_Generic;
     <comp lib="0" loc="(150,310)" name="Pin">
       <a name="width" val="8"/>
       <a name="label" val="DATABUS"/>
+      <a name="radix" val="10unsigned"/>
+    </comp>
+    <comp lib="0" loc="(920,70)" name="Pin">
+      <a name="label" val="OE"/>
       <a name="radix" val="10unsigned"/>
     </comp>
   </circuit>

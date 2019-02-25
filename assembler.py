@@ -130,6 +130,10 @@ def opp_to_hex(line):
         ins_temp = match_whole_ins.replace('{label}','([^ ]+)')
         match = re.match(ins_temp, line)
         if (match is not None):
+
+            # TODO Offset system is not correct
+            global offset
+            offset += 2
             return [translation[instruction], *match.groups()]
 
         ins_temp = match_whole_ins.replace('{number}','([0-9]+)')
@@ -137,7 +141,7 @@ def opp_to_hex(line):
         match = re.match(ins_temp, line)
         if (match is not None):
             global offset
-            offset += 1
+            offset += 2
             return [translation[instruction], *[int(x) for x in match.groups()]]
     return None 
 
@@ -173,6 +177,7 @@ def parse(input_file, output_file):
     #        print(x, end=' ')
     #print()
             
+    #print(final)
     file_output = ''
     for ins in final:
         if isinstance(ins, str):
@@ -180,9 +185,13 @@ def parse(input_file, output_file):
                 print("Label %s has not been defined" % (ins))
                 return
             ins = labels[ins] - offset
-            offset += 1
-        file_output += format(ins,'x') + ' '
+
+            file_output += ('%02x ' % (ins >> 4*2))
+            file_output += ('%02x ' % (ins & 0xFF))
+        else:
+            file_output += ('%02x ' % ins)
     file_output = file_output.strip()
+    #print(file_output)
 
     output_file.write("v2.0 raw\n")
     output_file.write(file_output)
@@ -199,10 +208,22 @@ parser.add_argument('input',
 parser.add_argument('--output', '-o',
                     type=argparse.FileType('wb'),
                     help='The machine level filename to write')
+import sys
+if (len(sys.argv) > 1):
+    args = parser.parse_args()
+    input_file = args.input
+    output_file = args.output
+else:
+    import tkinter as tk
+    from tkinter import filedialog
 
-args = parser.parse_args()
-input_file = args.input
-output_file = args.output
+    root = tk.Tk()
+    root.withdraw()
+
+    filename = filedialog.askopenfilename()
+    input_file = open(filename, 'r')
+    output_file = None
+
 if (output_file is None):
     output_file = open(pathlib.Path(input_file.name).stem+'.o','w')
 
