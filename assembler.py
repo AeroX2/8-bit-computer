@@ -130,26 +130,17 @@ def opp_to_hex(line):
         ins_temp = match_whole_ins.replace('{label}','([^ ]+)')
         match = re.match(ins_temp, line)
         if (match is not None):
-
-            # TODO Offset system is not correct
-            global offset
-            offset += 2
             return [translation[instruction], *match.groups()]
 
         ins_temp = match_whole_ins.replace('{number}','([0-9]+)')
-        ins_temp = match_whole_ins.replace('{number}','([0-9]+)')
         match = re.match(ins_temp, line)
         if (match is not None):
-            global offset
-            offset += 2
             return [translation[instruction], *[int(x) for x in match.groups()]]
     return None 
 
-final = []
-labels = {}
-offset = 0
 def parse(input_file, output_file):
-    global offset
+    final = []
+    labels = {}
 
     for ln,line in enumerate(input_file):
         variables = line.split()
@@ -158,8 +149,7 @@ def parse(input_file, output_file):
 
         label_match = re.match(':(.+)', opp)
         if (label_match is not None):
-            labels[label_match.group(1)] = ln+1
-            offset -= 1
+            labels[label_match.group(1)] = ln #TODO Next line with an instruction
         elif opp in operations:
             if not operations[opp](opp_args):
                 print("%sLine %d is not valid" % (line, ln))
@@ -178,23 +168,24 @@ def parse(input_file, output_file):
     #print()
             
     #print(final)
-    file_output = ''
+    file_output = []
     for ins in final:
         if isinstance(ins, str):
             if ins not in labels:
                 print("Label %s has not been defined" % (ins))
                 return
-            ins = labels[ins] - offset
 
-            file_output += ('%02x ' % (ins >> 4*2))
-            file_output += ('%02x ' % (ins & 0xFF))
+            #TODO Still not correct
+            ins = labels[ins] + len(file_output)
+
+            file_output.append('%02x' % (ins >> 4*2))
+            file_output.append('%02x' % (ins & 0xFF))
         else:
-            file_output += ('%02x ' % ins)
-    file_output = file_output.strip()
+            file_output.append('%02x' % ins)
     #print(file_output)
 
     output_file.write("v2.0 raw\n")
-    output_file.write(file_output)
+    output_file.write(' '.join(file_output))
     output_file.write("\n")
     output_file.close()
 
