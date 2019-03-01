@@ -2,8 +2,8 @@ load rom c 42
 :start
 in a
 cmp a c
-jmpa < less
-jmpa > greater
+jmpa .< less
+jmpa .> greater
 jmpa = equal
 :less
 opp -1

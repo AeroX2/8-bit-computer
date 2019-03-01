@@ -17,6 +17,7 @@ def check_load(args):
 operations = {
     'nop': lambda x: x == '',
     'mov': check_mov,
+    'cmp': re.compile(r'([acd]) ([acd])').match,
     'jmpa': re.compile(r'((<=|<|=|>|>=) [acd])|(.+)').match,
     'jmpr': re.compile(r'((<=|<|=|>|>=) [acd])|(.+)').match,
     'opp': re.compile(r'').match,
@@ -163,11 +164,16 @@ def parse(input_file, output_file):
             if not operations[opp](opp_args):
                 print("%sLine %d is not valid" % (line, ln))
                 return
+
             hex_op = opp_to_hex(line)
             if (hex_op is None):
-                print("%sLine %d couldn't find matching instruction" % (line, ln))
+                print("%sLine %d couldn't find translation for instruction" % (line, ln))
                 return
             final.extend(hex_op)
+        else:
+            print("%sLine %d couldn't find matching instruction" % (line, ln))
+            return
+
 
     #for x in final:
     #    if isinstance(x, int):
