@@ -121,8 +121,11 @@ translation_stage_two = list(filter(lambda x: '{label}' in x or
                                     translation))
 
 def opp_to_hex(line):
+    global offset
+
     line = line.strip()
     if line in translation:
+        offset += 1
         return [translation[line]]
 
     for instruction in translation_stage_two:
@@ -130,17 +133,23 @@ def opp_to_hex(line):
         ins_temp = match_whole_ins.replace('{label}','([^ ]+)')
         match = re.match(ins_temp, line)
         if (match is not None):
+            #Instructions with labels are 3 bytes
+            offset += 3
             return [translation[instruction], *match.groups()]
 
         ins_temp = match_whole_ins.replace('{number}','([0-9]+)')
         match = re.match(ins_temp, line)
         if (match is not None):
+            #Instructions with numbers are 2 bytes
+            offset += 2
             return [translation[instruction], *[int(x) for x in match.groups()]]
     return None 
 
 def parse(input_file, output_file):
     final = []
     labels = {}
+    global offset
+    offset = 0
 
     for ln,line in enumerate(input_file):
         variables = line.split()
@@ -149,7 +158,7 @@ def parse(input_file, output_file):
 
         label_match = re.match(':(.+)', opp)
         if (label_match is not None):
-            labels[label_match.group(1)] = ln #TODO Next line with an instruction
+            labels[label_match.group(1)] = offset
         elif opp in operations:
             if not operations[opp](opp_args):
                 print("%sLine %d is not valid" % (line, ln))
@@ -175,9 +184,7 @@ def parse(input_file, output_file):
                 print("Label %s has not been defined" % (ins))
                 return
 
-            #TODO Still not correct
-            ins = labels[ins] + len(file_output)
-
+            ins = labels[ins]
             file_output.append('%02x' % (ins >> 4*2))
             file_output.append('%02x' % (ins & 0xFF))
         else:
