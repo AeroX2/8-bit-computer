@@ -1,6 +1,6 @@
 :start
-jmpa one 
+jmp one 
 :beginning
-jmpa start
+jmp start
 :one
-jmpa beginning
+jmp beginning

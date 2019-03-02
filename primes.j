@@ -1,4 +1,4 @@
-load rom d 13
+load rom d 1
 
 :start
 load rom c 2
@@ -7,13 +7,14 @@ load rom c 2
 mov d a
 :divide
 opp a-b
-jmp >= divide
+jmp .> divide
 jmp = nextprime
 
-mov c a
-opp a+1
+opp b+1
 mov a c
-jmpa startdivide
+cmp a d
+jmp >= printprime
+jmp startdivide
 
 :printprime
 out d
@@ -23,5 +24,5 @@ mov d a
 opp a+1
 mov a d
 
-jmpa start
+jmp start
 

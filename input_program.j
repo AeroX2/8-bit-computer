@@ -2,18 +2,18 @@ load rom c 42
 :start
 in a
 cmp a c
-jmpa .< less
-jmpa .> greater
-jmpa = equal
+jmp .< less
+jmp .> greater
+jmp = equal
 :less
 opp -1
-jmpa end
+jmp end
 :greater
 opp 1
-jmpa end
+jmp end
 :equal
 opp 0
-jmpa end
+jmp end
 :end
 out a
-jmpa start
+jmp start

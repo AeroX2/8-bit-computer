@@ -6,5 +6,5 @@ mov a d
 opp a+b
 out a
 mov d c
-jmpa >= repeat
-jmpa start
+jmp >= repeat
+jmp start
