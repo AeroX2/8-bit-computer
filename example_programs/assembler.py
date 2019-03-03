@@ -18,8 +18,8 @@ operations = {
     'nop': lambda x: x == '',
     'mov': check_mov,
     'cmp': re.compile(r'([acd]) ([acd])').match,
-    'jmpa': re.compile(r'((<=|<|=|>|>=) [acd])|(.+)').match,
-    'jmpr': re.compile(r'((<=|<|=|>|>=) [acd])|(.+)').match,
+    'jmp': re.compile(r'(\.?(<=|<|=|>|>=) [acd])|(.+)').match,
+    'jmpr': re.compile(r'(\.?(<=|<|=|>|>=) [acd])|(.+)').match,
     'opp': re.compile(r'').match,
     'load': check_load,
     'save': re.compile(r'[acd] (ram|mari)').match,
@@ -47,29 +47,29 @@ translation = {
     'cmp d a': 0x27,
     #'cmp d c': 0x28,
 
-    'jmpa {label}':     0x30, 
-    'jmpa = {label}':   0x31, 
-    'jmpa != {label}':  0x32, 
-    'jmpa <= {label}':  0x33, 
-    'jmpa < {label}':   0x34, 
-    'jmpa > {label}':   0x35, 
-    'jmpa >= {label}':  0x36, 
-    'jmpa .<= {label}': 0x37, 
-    'jmpa .< {label}':  0x38, 
-    'jmpa .> {label}':  0x39, 
-    'jmpa .>= {label}': 0x3a,  
+    'jmp {label}':     0x30, 
+    'jmp = {label}':   0x31, 
+    'jmp != {label}':  0x32, 
+    'jmp <= {label}':  0x33, 
+    'jmp < {label}':   0x34, 
+    'jmp > {label}':   0x35, 
+    'jmp >= {label}':  0x36, 
+    'jmp .<= {label}': 0x37, 
+    'jmp .< {label}':  0x38, 
+    'jmp .> {label}':  0x39, 
+    'jmp .>= {label}': 0x3a,  
     
-    'jmpr {label}':     0x40, 
-    'jmpr = {label}':   0x41, 
-    'jmpr != {label}':  0x42, 
-    'jmpr <= {label}':  0x43, 
-    'jmpr < {label}':   0x44, 
-    'jmpr > {label}':   0x45, 
-    'jmpr >= {label}':  0x46, 
-    'jmpr .<= {label}': 0x47, 
-    'jmpr .< {label}':  0x48, 
-    'jmpr .> {label}':  0x49, 
-    'jmpr .>= {label}': 0x4a, 
+    'jmpr {number}':     0x40, 
+    'jmpr = {number}':   0x41, 
+    'jmpr != {number}':  0x42, 
+    'jmpr <= {number}':  0x43, 
+    'jmpr < {number}':   0x44, 
+    'jmpr > {number}':   0x45, 
+    'jmpr >= {number}':  0x46, 
+    'jmpr .<= {number}': 0x47, 
+    'jmpr .< {number}':  0x48, 
+    'jmpr .> {number}':  0x49, 
+    'jmpr .>= {number}': 0x4a, 
 
     'opp 0':   0x50,
     'opp 1':   0x51,
@@ -124,23 +124,23 @@ translation_stage_two = list(filter(lambda x: '{label}' in x or
 def opp_to_hex(line):
     global offset
 
-    line = line.strip()
     if line in translation:
         offset += 1
         return [translation[line]]
 
     for instruction in translation_stage_two:
-        match_whole_ins = '^'+instruction+'$'
-        ins_temp = match_whole_ins.replace('{label}','([^ ]+)')
+        match_whole_ins = '^'+re.escape(instruction)+'$'
+        
+        ins_temp = match_whole_ins.replace('\{label\}','([^ ]+)')
         match = re.match(ins_temp, line)
-        if (match is not None):
+        if match is not None:
             #Instructions with labels are 3 bytes
             offset += 3
             return [translation[instruction], *match.groups()]
 
-        ins_temp = match_whole_ins.replace('{number}','([0-9]+)')
+        ins_temp = match_whole_ins.replace('\{number\}','([0-9]+)')
         match = re.match(ins_temp, line)
-        if (match is not None):
+        if match is not None:
             #Instructions with numbers are 2 bytes
             offset += 2
             return [translation[instruction], *[int(x) for x in match.groups()]]
@@ -153,25 +153,34 @@ def parse(input_file, output_file):
     offset = 0
 
     for ln,line in enumerate(input_file):
+        line = line.strip()
+        line = re.sub(r'//.*','',line)
+        if not line:
+            continue
+        
         variables = line.split()
         opp = variables[0]
         opp_args = ' '.join(variables[1:])
 
         label_match = re.match(':(.+)', opp)
-        if (label_match is not None):
+        if label_match is not None:
+            #print(line, offset)
             labels[label_match.group(1)] = offset
         elif opp in operations:
             if not operations[opp](opp_args):
-                print("%sLine %d is not valid" % (line, ln))
+                print(line)
+                print("Line %d is not valid" % (ln+1))
                 return
 
             hex_op = opp_to_hex(line)
-            if (hex_op is None):
-                print("%sLine %d couldn't find translation for instruction" % (line, ln))
+            if hex_op is None:
+                print(line)
+                print("Line %d couldn't find translation for instruction" % (ln+1))
                 return
             final.extend(hex_op)
         else:
-            print("%sLine %d couldn't find matching instruction" % (line, ln))
+            print(line)
+            print("Line %d couldn't find matching instruction" % (ln+1))
             return
 
 
@@ -213,7 +222,7 @@ parser.add_argument('--output', '-o',
                     type=argparse.FileType('wb'),
                     help='The machine level filename to write')
 import sys
-if (len(sys.argv) > 1):
+if len(sys.argv) > 1:
     args = parser.parse_args()
     input_file = args.input
     output_file = args.output
@@ -228,7 +237,7 @@ else:
     input_file = open(filename, 'r')
     output_file = None
 
-if (output_file is None):
+if output_file is None:
     output_file = open(pathlib.Path(input_file.name).stem+'.o','w')
 
 parse(input_file, output_file)
