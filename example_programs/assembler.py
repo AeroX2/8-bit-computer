@@ -97,24 +97,25 @@ translation = {
     'load rom a {number}': 0x70,
     'load rom c {number}': 0x71,
     'load rom d {number}': 0x72,
-    'load ram a':          0x73,
-    'load ram c':          0x74,
-    'load ram d':          0x75,
+	
+    'load ram a': 0x80,
+    'load ram c': 0x81,
+    'load ram d': 0x82,
 
-    'save a ram': 0x80,
-    'save c ram': 0x81,
-    'save d ram': 0x82,
-    'save a mar': 0x83,
-    'save c mar': 0x84,
-    'save d mar': 0x85,
+    'save a ram': 0x90,
+    'save c ram': 0x91,
+    'save d ram': 0x92,
+    'save a mar': 0x93,
+    'save c mar': 0x94,
+    'save d mar': 0x95,
 
-    'in a': 0x90,
-    'in c': 0x91,
-    'in d': 0x92,
+    'in a': 0xa0,
+    'in c': 0xa1,
+    'in d': 0xa2,
 
-    'out a': 0xa0,
-    'out c': 0xa1,
-    'out d': 0xa2,
+    'out a': 0xb0,
+    'out c': 0xb1,
+    'out d': 0xb2,
 }
 
 translation_stage_two = list(filter(lambda x: '{label}' in x or
