@@ -16,34 +16,28 @@ load rom a 8
 save c mar
 save a ram
 
-//Variable locations
-load rom a 7
-load rom c 15
-load rom d 16
 
-:repeat
+:loop1 //8 times repeat
+
+load rom a 16
 save a mar
-load ram a
+save d ram
 
-save c mar
-load ram c
-
-opp a.+b
-
-load rom c 15
-save c mar
-load ram c
-opp b-1
+load rom c 8
+mov d a
+opp a+b
 mov a c
 
+//Technically this should be a+d but that isn't implemented
 mov d a
-opp a-1
-mov a d
-jmp <= nextfib
 
-load rom a 7
+//a[i] + c[i]
 save a mar
-load ram a
-opp a-1
+save a ram
+save c mar
+save c ram
+opp a.+b
 
-:nextfib
+
+
+jmp .<= loop1

@@ -22,7 +22,7 @@ operations = {
     'jmpr': re.compile(r'(\.?(<=|<|=|>|>=) [acd])|(.+)').match,
     'opp': re.compile(r'').match,
     'load': check_load,
-    'save': re.compile(r'[acd] (ram|mari)').match,
+    'save': re.compile(r'[acd] (ram|mar)').match,
     'in': re.compile(r'[acd]').match,
     'out': re.compile(r'[acd]').match
 }
@@ -154,7 +154,7 @@ def parse(input_file, output_file):
 
     for ln,line in enumerate(input_file):
         line = line.strip()
-        line = re.sub(r'//.*','',line)
+        line = re.sub(r' *(.+?) *//.*',r'\1',line)
         if not line:
             continue
         
