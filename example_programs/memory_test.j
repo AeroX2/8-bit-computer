@@ -51,11 +51,33 @@ opp a+b
 save a mar
 load ram a   //arr1[i]
 mov a c
+
+load rom a 11
+save a mar
+load ram a
+opp a
+jmp = dontsetcarry
+opp -1
+opp a-1
+:dontsetcarry
+
 mov d a
 opp a.+b     //arr1[i] + arr2[i]
 load rom c 10
 save c mar
 save a ram   //fn = ...
+
+nop
+nop
+nop
+
+load rom a 0
+jmp >= carrynotset
+load rom a 1
+:carrynotset
+load rom c 11
+save c mar
+save a ram
 
 nop
 nop

@@ -24,7 +24,8 @@ operations = {
     'load': check_load,
     'save': re.compile(r'[acd] (ram|mar)').match,
     'in': re.compile(r'[acd]').match,
-    'out': re.compile(r'[acd]').match
+    'out': re.compile(r'[acd]').match,
+    'pause': lambda x: x == ''
 }
 
 translation = {
@@ -116,6 +117,8 @@ translation = {
     'out a': 0xb0,
     'out c': 0xb1,
     'out d': 0xb2,
+
+    'pause': 0xf0
 }
 
 translation_stage_two = list(filter(lambda x: '{label}' in x or
