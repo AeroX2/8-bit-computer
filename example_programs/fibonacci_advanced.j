@@ -25,6 +25,7 @@ nop
 nop
 nop
 
+:start
 opp 0
 load rom c 5 //i=0
 save c mar
@@ -121,6 +122,8 @@ nop
 load rom a 10
 save a mar
 load ram a    //fn
+cmp a a
+jmp = nextfib
 
 load rom c 100
 load rom d 0
@@ -148,6 +151,7 @@ cmp d d
 jmp = nooutput1
 load rom c 48
 opp a+b
+out a
 load rom c 128
 opp a|b
 out a      //(a+48)|0x10000000
@@ -182,6 +186,7 @@ cmp d d
 jmp = nooutput
 load rom c 48
 opp a+b
+out a
 load rom c 128
 opp a|b
 out a      //(a+48)|0x10000000
@@ -191,9 +196,9 @@ load rom c 12 //Get the remainder
 save c mar
 load ram a
 
-pause
 load rom c 48
 opp a+b
+out a
 load rom c 128
 opp a|b
 out a      //(a+48)|0x10000000
@@ -214,3 +219,5 @@ load rom d 5
 save d mar
 save a ram  //i++
 jmp < repeat //i < size
+
+jmp start

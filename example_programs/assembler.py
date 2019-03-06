@@ -114,9 +114,12 @@ translation = {
     'in c': 0xa1,
     'in d': 0xa2,
 
-    'out a': 0xb0,
-    'out c': 0xb1,
-    'out d': 0xb2,
+    'out a':  0xb0,
+    'out c':  0xb1,
+    'out d':  0xb2,
+    #'out 0':  0xb3, #TODO: Implement this
+    #'out 1':  0xb4,
+    #'out -1': 0xb5,
 
     'pause': 0xf0
 }
