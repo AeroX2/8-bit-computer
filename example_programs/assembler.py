@@ -8,10 +8,23 @@ def check_mov(args):
         return r.group(1) != r.group(2)
 
 def check_load(args):
-    r = re.match(r'ram [acd]', args)
+    r = re.match(r'ram\[[acd]\] [acd]', args)
     if (r is not None):
         return True
-    r = re.match(r'rom [acd] .+', args)
+    r = re.match(r'ram\[[0-9]+\] [acd]', args)
+    if (r is not None):
+        return True
+    r = re.match(r'rom [acd] [0-9]+', args)
+    return r is not None
+
+def check_save(args):
+    r = re.match(r'[acd] ram\[[acd]\]', args)
+    if (r is not None):
+        return True
+    r = re.match(r'[acd] ram\[[0-9]+\]', args)
+    if (r is not None):
+        return True
+    r = re.match(r'[acd] mar', args)
     return r is not None
 
 operations = {
@@ -22,7 +35,7 @@ operations = {
     'jmpr': re.compile(r'(\.?(<=|<|=|>|>=) [acd])|(.+)').match,
     'opp': re.compile(r'').match,
     'load': check_load,
-    'save': re.compile(r'[acd] (ram|mar)').match,
+    'save': check_save,
     'in': re.compile(r'[acd]').match,
     'out': re.compile(r'[acd]').match,
     'pause': lambda x: x == ''
@@ -98,17 +111,35 @@ translation = {
     'load rom a {number}': 0x70,
     'load rom c {number}': 0x71,
     'load rom d {number}': 0x72,
-	
-    'load ram a': 0x80,
-    'load ram c': 0x81,
-    'load ram d': 0x82,
-
-    'save a ram': 0x90,
-    'save c ram': 0x91,
-    'save d ram': 0x92,
-    'save a mar': 0x93,
-    'save c mar': 0x94,
-    'save d mar': 0x95,
+    
+    'load ram[a] a': 0x80,
+    'load ram[a] c': 0x81,
+    'load ram[a] d': 0x82,
+    'load ram[c] a': 0x83,
+    'load ram[c] c': 0x84,
+    'load ram[c] d': 0x85,
+    'load ram[d] a': 0x86,
+    'load ram[d] c': 0x87,
+    'load ram[d] d': 0x88,
+    'load ram[{number}] a': 0x89,
+    'load ram[{number}] c': 0x8a,
+    'load ram[{number}] d': 0x8b,
+    
+    'save a ram[a]': 0x90,
+    'save a ram[c]': 0x91,
+    'save a ram[d]': 0x92,
+    'save c ram[a]': 0x93,
+    'save c ram[c]': 0x94,
+    'save c ram[d]': 0x95,
+    'save d ram[a]': 0x96,
+    'save d ram[c]': 0x97,
+    'save d ram[d]': 0x98,
+    'save a ram[{number}]': 0x99,
+    'save c ram[{number}]': 0x9a,
+    'save d ram[{number}]': 0x9b,
+    'save a mar': 0x9c,
+    'save c mar': 0x9d,
+    'save d mar': 0x9e,
 
     'in a': 0xa0,
     'in c': 0xa1,
