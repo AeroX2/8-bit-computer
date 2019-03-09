@@ -33,6 +33,9 @@ opp a-1
 
 mov d a
 opp a.+b     //arr1[i] + arr2[i]
+
+//TODO BCD digits
+
 save a ram[10]   //fn = ...
 
 load rom a 0
@@ -65,5 +68,17 @@ opp a+1
 cmp a c 
 save a ram[5]  //i++
 jmp < repeat //i < size
+
+load ram[0] a
+opp a-1
+save a ram[5] //i=size-1
+:reverseloop
+
+//Print out BCD digits
+
+load ram[5] a  //i
+opp a-1
+save a ram[5]  //i--
+jmp >= reverseloop //i >= 0
 
 jmp start

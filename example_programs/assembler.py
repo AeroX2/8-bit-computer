@@ -178,6 +178,7 @@ def opp_to_hex(line):
         if match is not None:
             #Instructions with numbers are 2 bytes
             offset += 2
+            #TODO Support for hex numbers
             return [translation[instruction], *[int(x) for x in match.groups()]]
     return None 
 
