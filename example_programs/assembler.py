@@ -18,6 +18,9 @@ def check_load(args):
     return r is not None
 
 def check_save(args):
+    r = re.match(r'[acd] ram', args)
+    if (r is not None):
+        return True
     r = re.match(r'[acd] ram\[[acd]\]', args)
     if (r is not None):
         return True
@@ -173,13 +176,26 @@ def opp_to_hex(line):
             offset += 3
             return [translation[instruction], *match.groups()]
 
-        ins_temp = match_whole_ins.replace('\{number\}','([0-9]+)')
+        ins_temp = match_whole_ins.replace('\{number\}','(?:(0x([0-9a-fA-F]+))|(0b([01]+))|([0-9]+))')
         match = re.match(ins_temp, line)
         if match is not None:
             #Instructions with numbers are 2 bytes
             offset += 2
-            #TODO Support for hex numbers
-            return [translation[instruction], *[int(x) for x in match.groups()]]
+
+            #TODO: Only supports one number per instruction
+            if match.group(1):
+                number = int(match.group(2),16)
+            elif match.group(3):            
+                number = int(match.group(4),2)
+            elif match.group(5):
+                number = int(match.group(5))
+                
+            if number > 0xff:
+                print(line)
+                print("Number larger than can fit in register")
+                return None
+            		
+            return [translation[instruction], number]
     return None 
 
 def parse(input_file, output_file):
@@ -189,8 +205,8 @@ def parse(input_file, output_file):
     offset = 0
 
     for ln,line in enumerate(input_file):
+        line = re.sub(r'//.*',r'',line)
         line = line.strip()
-        line = re.sub(r' *(.+?) *//.*',r'\1',line)
         if not line:
             continue
         
@@ -201,7 +217,12 @@ def parse(input_file, output_file):
         label_match = re.match(':(.+)', opp)
         if label_match is not None:
             #print(line, offset)
-            labels[label_match.group(1)] = offset
+            label_match = label_match.group(1)
+            if label_match not in labels:
+                labels[label_match] = offset
+            else:
+                print(line)
+                print("Line %d duplicate label detected" % (ln+1))
         elif opp in operations:
             if not operations[opp](opp_args):
                 print(line)
@@ -242,6 +263,9 @@ def parse(input_file, output_file):
             file_output.append('%02x' % ins)
     #print(file_output)
 
+    if output_file is None:
+        output_file = open(pathlib.Path(input_file.name).stem+'.o','w')
+
     output_file.write("v2.0 raw\n")
     output_file.write(' '.join(file_output))
     output_file.write("\n")
@@ -255,7 +279,7 @@ parser.add_argument('input',
                     type=argparse.FileType('r'), 
                     help='The assembly file to compile to machine level code')
 parser.add_argument('--output', '-o',
-                    type=argparse.FileType('wb'),
+                    type=argparse.FileType('w'),
                     help='The machine level filename to write')
 import sys
 if len(sys.argv) > 1:
@@ -272,8 +296,5 @@ else:
     filename = filedialog.askopenfilename()
     input_file = open(filename, 'r')
     output_file = None
-
-if output_file is None:
-    output_file = open(pathlib.Path(input_file.name).stem+'.o','w')
 
 parse(input_file, output_file)
