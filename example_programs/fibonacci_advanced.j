@@ -1,22 +1,22 @@
 load rom a 4
 save a ram[0]
 
-load rom a 0x81
+load rom a 0x0
 save a ram[1]
-load rom a 0x41
+load rom a 0x0
 save a ram[2]
 load rom a 0x0
 save a ram[3]
 load rom a 0x0
 save a ram[4]
 
-load rom a 0x65
+load rom a 0x1
 save a ram[6]
-load rom a 0x67
+load rom a 0x0
 save a ram[7]
-load rom a 0x00
+load rom a 0x0
 save a ram[8]
-load rom a 0x00
+load rom a 0x0
 save a ram[9]
 
 :start
@@ -39,12 +39,19 @@ mov a c
 
 load ram[11] a
 cmp a a
-mov d a
-jmp = nocarry
-opp a+1
+jmp = nocarry //if carry
+opp b+1       //c += 1
+mov a c
 :nocarry
-opp a+b         //arr1[i] + arr2[i] + carry
+mov d a
+opp a+b         //arr1[i] + arr2[i]
 save a ram[10] //fn = arr1[i] + arr2[i]
+
+load rom a 0
+jmp >= nocarrygen
+load rom a 1
+:nocarrygen
+save a ram[11]
 
 //TODO: Think about a half carry flag
 load rom a 0x0f
@@ -55,24 +62,26 @@ load rom a 0x0f
 opp a&b
 mov d c
 opp a+b
-load ram[11] c  //Add the carry
-opp a+b
 load rom c 0x0a
 cmp a c
-load rom a 0
-save a ram[11]   //Set carry to 0
 load ram[10] a   //a = fn
 jmp < dontaddsix //if arr1[i]&0x0f + arr2[i]&0x0f > 9
 load rom c 6
 opp a+b          //fn += 6
-jmp < addsix
 save a ram[10]
+jmp < addsix    //Jump if carry
 :dontaddsix
 
+load ram[11] a
+cmp a a
+jmp != addsix //Jump if carry
+
+load ram[10] a   //a = fn
 load rom c 0xa0
 cmp a c
 jmp < dontaddsix2
 :addsix
+load ram[10] a   //a = fn
 load rom c 0x60
 opp a+b
 save a ram[10]
@@ -105,11 +114,8 @@ cmp a c
 save a ram[5]  //i++
 jmp < repeat //i < size
 
-load rom a 10
-out a
-load rom c 0b10000000
-opp a|b
-out a
+opp 0
+save a ram[12]
 
 load ram[0] a
 opp a-1
@@ -122,35 +128,63 @@ load rom a 6   //arr2
 load ram[5] c  //i
 opp a+b
 load ram[a] a  //arr2[i]
+mov a d
+
+load rom c 4
+opp a>>b
+mov a c
+
+cmp a a
+jmp = notrim
+opp 1
+save a ram[12]
+:notrim
+load ram[12] a
 cmp a a
 jmp = noout
 
-mov a d
-load rom c 4
-pause
-opp a>>b
+mov c a
 load rom c 48
 opp a+b
-out a   //(arr2[i] >> 4) + 48
+out a    //(arr2[i] >> 4) + 48
 load rom c 0b10000000
 opp a|b
 out a    //((arr2[i] >> 4) + 48) | 0b10000000
+:noout
 
 mov d a
 load rom c 0x0f
 opp a&b
+mov a c
+
+cmp a a
+jmp = notrim2
+opp 1
+save a ram[12]
+:notrim2
+load ram[12] a
+cmp a a
+jmp = noout2
+
+mov c a
 load rom c 48
 opp a+b
 out a   //(arr2[i] & 0x0f) + 48
 load rom c 0b10000000
 opp a|b
 out a   //((arr2[i] & 0x0f) + 48) | 0b10000000
-
-:noout
+:noout2
 
 load ram[5] a  //i
 opp a-1
 save a ram[5]  //i--
 jmp .> reverseloop //i >= 0
+
+//Print out a newline
+load rom a 10
+out a
+load rom c 0b10000000
+opp a|b
+out a
 
 jmp start
