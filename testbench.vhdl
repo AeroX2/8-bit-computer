@@ -19,7 +19,7 @@ architecture testbench_behaviour of testbench is
 			  FPGA_OUTPUT_PIN_7 : OUT std_logic);
 	end component LogisimToplevelShell;
 
-	signal in0 : std_logic := '0';
+	signal reset : std_logic := '0';
 	signal out0	: std_logic;
 	signal out1	: std_logic;
 	signal out2	: std_logic;
@@ -36,7 +36,7 @@ architecture testbench_behaviour of testbench is
 
 		module_func: LogisimToplevelShell
 		port map (
-				FPGA_INPUT_PIN_0 => in0,
+				FPGA_INPUT_PIN_0 => reset,
 				FPGA_INPUT_PIN_1 => clock,
 				FPGA_OUTPUT_PIN_0 => out0,
 				FPGA_OUTPUT_PIN_1 => out1,
@@ -50,11 +50,11 @@ architecture testbench_behaviour of testbench is
 		--
 		process
 			begin
-				in0 <= '0';
+				reset <= '0';
 				wait for 1 ms;
-				in0 <= '1';
+				reset <= '1';
 				wait for 1 ms;
-				in0 <= '0';
+				reset <= '0';
 				wait for 1 ms;
 
 				for i in 1 to num_cycles loop

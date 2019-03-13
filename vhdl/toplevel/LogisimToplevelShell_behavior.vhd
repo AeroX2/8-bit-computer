@@ -30,19 +30,19 @@ BEGIN
    -----------------------------------------------------------------------------
    -- Here all signal adaptations are performed                               --
    -----------------------------------------------------------------------------
-   s_clk <= NOT FPGA_INPUT_PIN_0;
-   FPGA_OUTPUT_PIN_0 <= NOT s_computer_output(0);
-   FPGA_OUTPUT_PIN_1 <= NOT s_computer_output(1);
-   FPGA_OUTPUT_PIN_2 <= NOT s_computer_output(2);
-   FPGA_OUTPUT_PIN_3 <= NOT s_computer_output(3);
-   FPGA_OUTPUT_PIN_4 <= NOT s_computer_output(4);
-   FPGA_OUTPUT_PIN_5 <= NOT s_computer_output(5);
-   FPGA_OUTPUT_PIN_6 <= NOT s_computer_output(6);
-   FPGA_OUTPUT_PIN_7 <= NOT s_computer_output(7);
+   s_clk <= FPGA_INPUT_PIN_1;
+   FPGA_OUTPUT_PIN_0 <= s_computer_output(0);
+   FPGA_OUTPUT_PIN_1 <= s_computer_output(1);
+   FPGA_OUTPUT_PIN_2 <= s_computer_output(2);
+   FPGA_OUTPUT_PIN_3 <= s_computer_output(3);
+   FPGA_OUTPUT_PIN_4 <= s_computer_output(4);
+   FPGA_OUTPUT_PIN_5 <= s_computer_output(5);
+   FPGA_OUTPUT_PIN_6 <= s_computer_output(6);
+   FPGA_OUTPUT_PIN_7 <= s_computer_output(7);
    -----------------------------------------------------------------------------
    -- Here all inlined adaptations are performed                              --
    -----------------------------------------------------------------------------
-   s_LOGISIM_INPUT_BUBBLES(0) <= NOT FPGA_INPUT_PIN_1;
+   s_LOGISIM_INPUT_BUBBLES(0) <= FPGA_INPUT_PIN_0;
 
    -----------------------------------------------------------------------------
    -- Here the toplevel component is connected                                --
