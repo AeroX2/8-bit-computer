@@ -4,7 +4,7 @@
 --==                                                                          ==
 --==                                                                          ==
 --== Project   : computer_fpga                                                ==
---== Component : main                                                         ==
+--== Component : RAMCONTENTS_ram_c                                            ==
 --==                                                                          ==
 --==============================================================================
 
@@ -14,9 +14,12 @@ USE ieee.std_logic_1164.all;
 USE ieee.numeric_std.all;
 
 
-ENTITY main IS
-   PORT ( clk                 : IN  std_logic;
-          input_pins          : IN  std_logic_vector( 7 DOWNTO 0 );
-          logisimInputBubbles : IN  std_logic_vector( 10 DOWNTO 0 );
-          output_pins         : OUT std_logic_vector( 7 DOWNTO 0 ) );
-END ENTITY main;
+ENTITY RAMCONTENTS_ram_c IS
+   PORT ( address : IN  std_logic_vector( 7 DOWNTO 0 );
+          clock   : IN  std_logic;
+          dataIn  : IN  std_logic_vector( 7 DOWNTO 0 );
+          oe      : IN  std_logic;
+          tick    : IN  std_logic;
+          we      : IN  std_logic;
+          dataOut : OUT std_logic_vector( 7 DOWNTO 0 ) );
+END ENTITY RAMCONTENTS_ram_c;

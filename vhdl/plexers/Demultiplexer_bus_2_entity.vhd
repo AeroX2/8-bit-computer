@@ -4,7 +4,7 @@
 --==                                                                          ==
 --==                                                                          ==
 --== Project   : computer_fpga                                                ==
---== Component : main                                                         ==
+--== Component : Demultiplexer_bus_2                                          ==
 --==                                                                          ==
 --==============================================================================
 
@@ -14,9 +14,11 @@ USE ieee.std_logic_1164.all;
 USE ieee.numeric_std.all;
 
 
-ENTITY main IS
-   PORT ( clk                 : IN  std_logic;
-          input_pins          : IN  std_logic_vector( 7 DOWNTO 0 );
-          logisimInputBubbles : IN  std_logic_vector( 10 DOWNTO 0 );
-          output_pins         : OUT std_logic_vector( 7 DOWNTO 0 ) );
-END ENTITY main;
+ENTITY Demultiplexer_bus_2 IS
+   GENERIC ( nrOfBits : INTEGER );
+   PORT ( demuxIn    : IN  std_logic_vector( (nrOfBits - 1) DOWNTO 0 );
+          enable     : IN  std_logic;
+          sel        : IN  std_logic;
+          demuxOut_0 : OUT std_logic_vector( (nrOfBits - 1) DOWNTO 0 );
+          demuxOut_1 : OUT std_logic_vector( (nrOfBits - 1) DOWNTO 0 ) );
+END ENTITY Demultiplexer_bus_2;

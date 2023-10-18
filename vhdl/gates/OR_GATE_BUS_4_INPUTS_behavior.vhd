@@ -1,5 +1,6 @@
 --==============================================================================
---== Logisim goes FPGA automatic generated VHDL code                          ==
+--== Logisim-evolution goes FPGA automatic generated VHDL code                ==
+--== https://github.com/logisim-evolution/                                    ==
 --==                                                                          ==
 --==                                                                          ==
 --== Project   : computer_fpga                                                ==
@@ -7,42 +8,32 @@
 --==                                                                          ==
 --==============================================================================
 
-ARCHITECTURE PlatformIndependent OF OR_GATE_BUS_4_INPUTS IS 
+ARCHITECTURE platformIndependent OF OR_GATE_BUS_4_INPUTS IS 
 
-   -----------------------------------------------------------------------------
-   -- Here all used signals are defined                                       --
-   -----------------------------------------------------------------------------
-   SIGNAL s_real_input_1                     : std_logic_vector( (NrOfBits-1) DOWNTO 0 );
-   SIGNAL s_real_input_2                     : std_logic_vector( (NrOfBits-1) DOWNTO 0 );
-   SIGNAL s_real_input_3                     : std_logic_vector( (NrOfBits-1) DOWNTO 0 );
-   SIGNAL s_real_input_4                     : std_logic_vector( (NrOfBits-1) DOWNTO 0 );
-   SIGNAL s_signal_invert_mask               : std_logic_vector( 3 DOWNTO 0 );
+--------------------------------------------------------------------------------
+-- All used signals are defined here                                          --
+--------------------------------------------------------------------------------
+   SIGNAL s_realInput1 : std_logic_vector( (NrOfBits - 1) DOWNTO 0 );
+   SIGNAL s_realInput2 : std_logic_vector( (NrOfBits - 1) DOWNTO 0 );
+   SIGNAL s_realInput3 : std_logic_vector( (NrOfBits - 1) DOWNTO 0 );
+   SIGNAL s_realInput4 : std_logic_vector( (NrOfBits - 1) DOWNTO 0 );
 
 BEGIN
 
-   -----------------------------------------------------------------------------
-   -- Here the bubbles are processed                                          --
-   -----------------------------------------------------------------------------
-   s_signal_invert_mask <= std_logic_vector(to_unsigned(BubblesMask,4));
-   s_real_input_1  <= NOT( Input_1 )
-                         WHEN s_signal_invert_mask(0) = '1' ELSE
-                      Input_1;
-   s_real_input_2  <= NOT( Input_2 )
-                         WHEN s_signal_invert_mask(1) = '1' ELSE
-                      Input_2;
-   s_real_input_3  <= NOT( Input_3 )
-                         WHEN s_signal_invert_mask(2) = '1' ELSE
-                      Input_3;
-   s_real_input_4  <= NOT( Input_4 )
-                         WHEN s_signal_invert_mask(3) = '1' ELSE
-                      Input_4;
+   --------------------------------------------------------------------------------
+   -- Here the bubbles are processed                                             --
+   --------------------------------------------------------------------------------
+   s_realInput1 <= input1 WHEN BubblesMask(0) = '0' ELSE NOT(input1);
+   s_realInput2 <= input2 WHEN BubblesMask(1) = '0' ELSE NOT(input2);
+   s_realInput3 <= input3 WHEN BubblesMask(2) = '0' ELSE NOT(input3);
+   s_realInput4 <= input4 WHEN BubblesMask(3) = '0' ELSE NOT(input4);
 
-   -----------------------------------------------------------------------------
-   -- Here the functionality is defined                                       --
-   -----------------------------------------------------------------------------
-   Result <= s_real_input_1 OR
-             s_real_input_2 OR
-             s_real_input_3 OR
-             s_real_input_4;
+   --------------------------------------------------------------------------------
+   -- Here the functionality is defined                                          --
+   --------------------------------------------------------------------------------
+   result <= s_realInput1 OR 
+             s_realInput2 OR 
+             s_realInput3 OR 
+             s_realInput4;
 
-END PlatformIndependent;
+END platformIndependent;

@@ -7,8 +7,8 @@ load rom c 2
 mov d a
 :divide
 opp a-b
-jmp .> divide
 jmp = nextprime
+jmp .> divide
 
 opp b+1
 mov a c

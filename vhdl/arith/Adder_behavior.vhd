@@ -4,30 +4,27 @@
 --==                                                                          ==
 --==                                                                          ==
 --== Project   : computer_fpga                                                ==
---== Component : AND_GATE                                                     ==
+--== Component : Adder                                                        ==
 --==                                                                          ==
 --==============================================================================
 
-ARCHITECTURE platformIndependent OF AND_GATE IS 
+ARCHITECTURE platformIndependent OF Adder IS 
 
 --------------------------------------------------------------------------------
 -- All used signals are defined here                                          --
 --------------------------------------------------------------------------------
-   SIGNAL s_realInput1 : std_logic;
-   SIGNAL s_realInput2 : std_logic;
+   SIGNAL s_extendedDataA : std_logic_vector( (extendedBits - 1) DOWNTO 0 );
+   SIGNAL s_extendedDataB : std_logic_vector( (extendedBits - 1) DOWNTO 0 );
+   SIGNAL s_sumResult     : std_logic_vector( (extendedBits - 1) DOWNTO 0 );
 
 BEGIN
 
-   --------------------------------------------------------------------------------
-   -- Here the bubbles are processed                                             --
-   --------------------------------------------------------------------------------
-   s_realInput1 <= input1 WHEN BubblesMask(0) = '0' ELSE NOT(input1);
-   s_realInput2 <= input2 WHEN BubblesMask(1) = '0' ELSE NOT(input2);
-
-   --------------------------------------------------------------------------------
-   -- Here the functionality is defined                                          --
-   --------------------------------------------------------------------------------
-   result <= s_realInput1 AND 
-             s_realInput2;
+   s_extendedDataA <= "0"&dataA;
+   s_extendedDataB <= "0"&dataB;
+   s_sumResult     <= std_logic_vector(unsigned(s_extendedDataA) +
+                                        unsigned(s_extendedDataB) +
+                                        (""&carryIn));
+   result   <= s_sumResult( (nrOfBits-1) DOWNTO 0 );
+   carryOut <= s_sumResult(extendedBits-1);
 
 END platformIndependent;

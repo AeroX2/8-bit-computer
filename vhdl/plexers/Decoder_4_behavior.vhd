@@ -1,5 +1,6 @@
 --==============================================================================
---== Logisim goes FPGA automatic generated VHDL code                          ==
+--== Logisim-evolution goes FPGA automatic generated VHDL code                ==
+--== https://github.com/logisim-evolution/                                    ==
 --==                                                                          ==
 --==                                                                          ==
 --== Project   : computer_fpga                                                ==
@@ -7,19 +8,15 @@
 --==                                                                          ==
 --==============================================================================
 
-ARCHITECTURE PlatformIndependent OF Decoder_4 IS 
-
-   -----------------------------------------------------------------------------
-   -- Here all used signals are defined                                       --
-   -----------------------------------------------------------------------------
+ARCHITECTURE platformIndependent OF Decoder_4 IS 
 
 BEGIN
-   DecoderOut_0 <= '1' WHEN sel =   "00"  AND
-                              Enable = '1' ELSE '0';
-   DecoderOut_1 <= '1' WHEN sel =   "01"  AND
-                              Enable = '1' ELSE '0';
-   DecoderOut_2 <= '1' WHEN sel =   "10"  AND
-                              Enable = '1' ELSE '0';
-   DecoderOut_3 <= '1' WHEN sel =   "11"  AND
-                              Enable = '1' ELSE '0';
-END PlatformIndependent;
+
+   decoderOut_0 <= '1' WHEN sel = "00" ELSE '0';
+
+   decoderOut_1 <= '1' WHEN sel = "01" ELSE '0';
+
+   decoderOut_2 <= '1' WHEN sel = "10" ELSE '0';
+
+   decoderOut_3 <= '1' WHEN sel = "11" ELSE '0';
+END platformIndependent;

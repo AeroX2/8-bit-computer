@@ -1,5 +1,6 @@
 --==============================================================================
---== Logisim goes FPGA automatic generated VHDL code                          ==
+--== Logisim-evolution goes FPGA automatic generated VHDL code                ==
+--== https://github.com/logisim-evolution/                                    ==
 --==                                                                          ==
 --==                                                                          ==
 --== Project   : computer_fpga                                                ==
@@ -7,40 +8,41 @@
 --==                                                                          ==
 --==============================================================================
 
-ARCHITECTURE PlatformIndependent OF S_R_FLIPFLOP IS 
+ARCHITECTURE platformIndependent OF S_R_FLIPFLOP IS 
 
-   -----------------------------------------------------------------------------
-   -- Here all used signals are defined                                       --
-   -----------------------------------------------------------------------------
-   SIGNAL s_next_state                       : std_logic;
-   SIGNAL s_current_state_reg                : std_logic;
+--------------------------------------------------------------------------------
+-- All used signals are defined here                                          --
+--------------------------------------------------------------------------------
+   SIGNAL s_clock        : std_logic;
+   SIGNAL s_currentState : std_logic;
+   SIGNAL s_nextState    : std_logic;
 
 BEGIN
-   -----------------------------------------------------------------------------
-   -- Here the ouput signals are defined                                      --
-   -----------------------------------------------------------------------------
-   Q     <= s_current_state_reg;
-   Q_bar <= NOT(s_current_state_reg);
 
-   -----------------------------------------------------------------------------
-   -- Here the update logic is defined                                        --
-   -----------------------------------------------------------------------------
-   s_next_state <= (s_current_state_reg OR S) AND NOT(R);
+   --------------------------------------------------------------------------------
+   -- Here the output signals are defined                                        --
+   --------------------------------------------------------------------------------
+   q        <= s_currentState;
+   qBar     <=  NOT (s_currentState);
+   s_clock  <= clock WHEN invertClockEnable = 0 ELSE NOT(clock);
 
-   -----------------------------------------------------------------------------
-   -- Here the actual state register is defined                               --
-   -----------------------------------------------------------------------------
-   make_memory : PROCESS( clock , Reset , Preset , Tick , s_next_state )
-      VARIABLE temp : std_logic_vector(0 DOWNTO 0);
+   --------------------------------------------------------------------------------
+   -- Here the update logic is defined                                           --
+   --------------------------------------------------------------------------------
+    s_nextState <= (s_currentState OR s) AND  NOT (r);
+
+   --------------------------------------------------------------------------------
+   -- Here the actual state register is defined                                  --
+   --------------------------------------------------------------------------------
+   makeMemory : PROCESS( s_clock , reset , preset , tick , s_nextState ) IS
    BEGIN
-      temp := std_logic_vector(to_unsigned(ActiveLevel,1));
-      IF (Reset = '1') THEN s_current_state_reg <= '0';
-      ELSIF (Preset = '1') THEN s_current_state_reg <= '1';
-      ELSIF (Clock'event AND (Clock = temp(0))) THEN
-         IF (Tick = '1') THEN
-            s_current_state_reg <= s_next_state;
+      IF (reset = '1') THEN s_currentState <= '0';
+      ELSIF (preset = '1') THEN s_currentState <= '1';
+      ELSIF (rising_edge(s_clock)) THEN
+         IF (tick = '1') THEN
+            s_currentState <= s_nextState;
          END IF;
       END IF;
-   END PROCESS make_memory;
+   END PROCESS makeMemory;
 
-END PlatformIndependent;
+END platformIndependent;

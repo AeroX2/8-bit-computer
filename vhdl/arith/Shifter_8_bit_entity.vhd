@@ -1,9 +1,10 @@
 --==============================================================================
---== Logisim goes FPGA automatic generated VHDL code                          ==
+--== Logisim-evolution goes FPGA automatic generated VHDL code                ==
+--== https://github.com/logisim-evolution/                                    ==
 --==                                                                          ==
 --==                                                                          ==
 --== Project   : computer_fpga                                                ==
---== Component : computer                                                     ==
+--== Component : Shifter_8_bit                                                ==
 --==                                                                          ==
 --==============================================================================
 
@@ -12,9 +13,10 @@ LIBRARY ieee;
 USE ieee.std_logic_1164.all;
 USE ieee.numeric_std.all;
 
-ENTITY computer IS
-   PORT ( LOGISIM_INPUT_BUBBLES     : IN  std_logic_vector( 0 DOWNTO 0 );
-          clk                       : IN  std_logic;
-          computer_output           : OUT std_logic_vector( 7 DOWNTO 0 ));
-END computer;
 
+ENTITY Shifter_8_bit IS
+   GENERIC ( shifterMode : INTEGER );
+   PORT ( dataA       : IN  std_logic_vector( 7 DOWNTO 0 );
+          shiftAmount : IN  std_logic_vector( 2 DOWNTO 0 );
+          result      : OUT std_logic_vector( 7 DOWNTO 0 ) );
+END ENTITY Shifter_8_bit;

@@ -1,5 +1,6 @@
 --==============================================================================
---== Logisim goes FPGA automatic generated VHDL code                          ==
+--== Logisim-evolution goes FPGA automatic generated VHDL code                ==
+--== https://github.com/logisim-evolution/                                    ==
 --==                                                                          ==
 --==                                                                          ==
 --== Project   : computer_fpga                                                ==
@@ -12,15 +13,15 @@ LIBRARY ieee;
 USE ieee.std_logic_1164.all;
 USE ieee.numeric_std.all;
 
-ENTITY S_R_FLIPFLOP IS
-   GENERIC ( ActiveLevel               : INTEGER);
-   PORT ( Clock                     : IN  std_logic;
-          Preset                    : IN  std_logic;
-          R                         : IN  std_logic;
-          Reset                     : IN  std_logic;
-          S                         : IN  std_logic;
-          Tick                      : IN  std_logic;
-          Q                         : OUT std_logic;
-          Q_bar                     : OUT std_logic);
-END S_R_FLIPFLOP;
 
+ENTITY S_R_FLIPFLOP IS
+   GENERIC ( invertClockEnable : INTEGER );
+   PORT ( clock  : IN  std_logic;
+          preset : IN  std_logic;
+          r      : IN  std_logic;
+          reset  : IN  std_logic;
+          s      : IN  std_logic;
+          tick   : IN  std_logic;
+          q      : OUT std_logic;
+          qBar   : OUT std_logic );
+END ENTITY S_R_FLIPFLOP;

@@ -4,19 +4,17 @@
 --==                                                                          ==
 --==                                                                          ==
 --== Project   : computer_fpga                                                ==
---== Component : main                                                         ==
+--== Component : Demultiplexer_bus_2                                          ==
 --==                                                                          ==
 --==============================================================================
 
+ARCHITECTURE platformIndependent OF Demultiplexer_bus_2 IS 
 
-LIBRARY ieee;
-USE ieee.std_logic_1164.all;
-USE ieee.numeric_std.all;
+BEGIN
 
+   demuxOut_0  <= demuxIn WHEN sel = '0' AND
+                               enable = '1' ELSE (OTHERS => '0');
 
-ENTITY main IS
-   PORT ( clk                 : IN  std_logic;
-          input_pins          : IN  std_logic_vector( 7 DOWNTO 0 );
-          logisimInputBubbles : IN  std_logic_vector( 10 DOWNTO 0 );
-          output_pins         : OUT std_logic_vector( 7 DOWNTO 0 ) );
-END ENTITY main;
+   demuxOut_1  <= demuxIn WHEN sel = '1' AND
+                               enable = '1' ELSE (OTHERS => '0');
+END platformIndependent;

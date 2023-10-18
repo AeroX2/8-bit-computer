@@ -1,5 +1,6 @@
 --==============================================================================
---== Logisim goes FPGA automatic generated VHDL code                          ==
+--== Logisim-evolution goes FPGA automatic generated VHDL code                ==
+--== https://github.com/logisim-evolution/                                    ==
 --==                                                                          ==
 --==                                                                          ==
 --== Project   : computer_fpga                                                ==
@@ -7,25 +8,23 @@
 --==                                                                          ==
 --==============================================================================
 
-ARCHITECTURE PlatformIndependent OF Multiplexer_bus_2 IS 
-
-   -----------------------------------------------------------------------------
-   -- Here all used signals are defined                                       --
-   -----------------------------------------------------------------------------
+ARCHITECTURE platformIndependent OF Multiplexer_bus_2 IS 
 
 BEGIN
-   make_mux : PROCESS( Enable,
-                       MuxIn_0,
-                       MuxIn_1,
-                       Sel )
+
+   makeMux : PROCESS(enable,
+                     muxIn_0,
+                     muxIn_1,
+                     sel) IS
    BEGIN
-      IF (Enable = '0') THEN
-         MuxOut <= (OTHERS => '0');
+      IF (enable = '0') THEN
+         muxOut <= (OTHERS => '0');
                         ELSE
-         CASE (Sel) IS
-            WHEN    '0'  => MuxOut <= MuxIn_0;
-            WHEN OTHERS  => MuxOut <= MuxIn_1;
+         CASE (sel) IS
+            WHEN '0' => muxOut <= muxIn_0;
+            WHEN OTHERS  => muxOut <= muxIn_1;
          END CASE;
       END IF;
-   END PROCESS make_mux;
-END PlatformIndependent;
+   END PROCESS makeMux;
+
+END platformIndependent;

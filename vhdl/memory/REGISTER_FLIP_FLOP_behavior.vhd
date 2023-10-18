@@ -1,5 +1,6 @@
 --==============================================================================
---== Logisim goes FPGA automatic generated VHDL code                          ==
+--== Logisim-evolution goes FPGA automatic generated VHDL code                ==
+--== https://github.com/logisim-evolution/                                    ==
 --==                                                                          ==
 --==                                                                          ==
 --== Project   : computer_fpga                                                ==
@@ -7,31 +8,27 @@
 --==                                                                          ==
 --==============================================================================
 
-ARCHITECTURE PlatformIndependent OF REGISTER_FLIP_FLOP IS 
+ARCHITECTURE platformIndependent OF REGISTER_FLIP_FLOP IS 
 
-   -----------------------------------------------------------------------------
-   -- Here all used signals are defined                                       --
-   -----------------------------------------------------------------------------
-   SIGNAL s_state_reg                        : std_logic_vector( (NrOfBits-1) DOWNTO 0 );
+--------------------------------------------------------------------------------
+-- All used signals are defined here                                          --
+--------------------------------------------------------------------------------
+   SIGNAL s_clock        : std_logic;
+   SIGNAL s_currentState : std_logic_vector( (nrOfBits - 1) DOWNTO 0 );
 
 BEGIN
-   Q <= s_state_reg;
 
-   make_memory : PROCESS( clock , Reset , ClockEnable , Tick , D )
+   q       <= s_currentState;
+   s_clock <= clock WHEN invertClock = 0 ELSE NOT(clock);
+
+   makeMemory : PROCESS(s_clock, reset, clockEnable, tick, d) IS
    BEGIN
-      IF (Reset = '1') THEN s_state_reg <= (OTHERS => '0');
-      ELSIF (ActiveLevel = 1) THEN
-         IF (Clock'event AND (Clock = '1')) THEN
-            IF (ClockEnable = '1' AND Tick = '1') THEN
-               s_state_reg <= D;
-            END IF;
-         END IF;
-      ELSIF (ActiveLevel = 0) THEN
-         IF (Clock'event AND (Clock = '0')) THEN
-         IF (ClockEnable = '1' AND Tick = '1') THEN
-               s_state_reg <= D;
-            END IF;
-         END IF;
+      IF (reset = '1') THEN s_currentState <= (OTHERS => '0');
+   ELSIF (rising_Edge(s_clock)) THEN
+      IF (clockEnable = '1' AND tick = '1') THEN
+         s_currentState <= d;
       END IF;
-   END PROCESS make_memory;
-END PlatformIndependent;
+      END IF;
+   END PROCESS makeMemory;
+
+END platformIndependent;

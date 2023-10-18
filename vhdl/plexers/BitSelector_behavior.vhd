@@ -1,5 +1,6 @@
 --==============================================================================
---== Logisim goes FPGA automatic generated VHDL code                          ==
+--== Logisim-evolution goes FPGA automatic generated VHDL code                ==
+--== https://github.com/logisim-evolution/                                    ==
 --==                                                                          ==
 --==                                                                          ==
 --== Project   : computer_fpga                                                ==
@@ -7,15 +8,17 @@
 --==                                                                          ==
 --==============================================================================
 
-ARCHITECTURE PlatformIndependent OF BitSelector IS 
+ARCHITECTURE platformIndependent OF BitSelector IS 
 
-   -----------------------------------------------------------------------------
-   -- Here all used signals are defined                                       --
-   -----------------------------------------------------------------------------
-   SIGNAL s_extended_vector                  : std_logic_vector( (NrOfExtendedBits-1) DOWNTO 0 );
+--------------------------------------------------------------------------------
+-- All used signals are defined here                                          --
+--------------------------------------------------------------------------------
+   SIGNAL s_extendedVector : std_logic_vector( (nrOfExtendedBits - 1) DOWNTO 0 );
 
 BEGIN
-   s_extended_vector((NrOfExtendedBits-1) DOWNTO NrOfInputBits) <= (OTHERS => '0');
-   s_extended_vector((NrOfInputBits-1) DOWNTO 0) <= DataIn;
-   DataOut <= s_extended_vector(to_integer(unsigned(Sel)));
-END PlatformIndependent;
+
+   s_extendedVector((nrOfExtendedBits-1) DOWNTO nrOfInputBits) <= (OTHERS => '0');
+   s_extendedVector((nrOfInputBits-1) DOWNTO 0) <= dataIn;
+   dataOut <= s_extendedVector( to_integer(unsigned(sel)) );
+
+END platformIndependent;

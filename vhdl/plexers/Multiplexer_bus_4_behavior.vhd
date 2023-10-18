@@ -1,5 +1,6 @@
 --==============================================================================
---== Logisim goes FPGA automatic generated VHDL code                          ==
+--== Logisim-evolution goes FPGA automatic generated VHDL code                ==
+--== https://github.com/logisim-evolution/                                    ==
 --==                                                                          ==
 --==                                                                          ==
 --== Project   : computer_fpga                                                ==
@@ -7,29 +8,27 @@
 --==                                                                          ==
 --==============================================================================
 
-ARCHITECTURE PlatformIndependent OF Multiplexer_bus_4 IS 
-
-   -----------------------------------------------------------------------------
-   -- Here all used signals are defined                                       --
-   -----------------------------------------------------------------------------
+ARCHITECTURE platformIndependent OF Multiplexer_bus_4 IS 
 
 BEGIN
-   make_mux : PROCESS( Enable,
-                       MuxIn_0,
-                       MuxIn_1,
-                       MuxIn_2,
-                       MuxIn_3,
-                       Sel )
+
+   makeMux : PROCESS(enable,
+                     muxIn_0,
+                     muxIn_1,
+                     muxIn_2,
+                     muxIn_3,
+                     sel) IS
    BEGIN
-      IF (Enable = '0') THEN
-         MuxOut <= (OTHERS => '0');
+      IF (enable = '0') THEN
+         muxOut <= (OTHERS => '0');
                         ELSE
-         CASE (Sel) IS
-            WHEN   "00"  => MuxOut <= MuxIn_0;
-            WHEN   "01"  => MuxOut <= MuxIn_1;
-            WHEN   "10"  => MuxOut <= MuxIn_2;
-            WHEN OTHERS  => MuxOut <= MuxIn_3;
+         CASE (sel) IS
+            WHEN "00" => muxOut <= muxIn_0;
+            WHEN "01" => muxOut <= muxIn_1;
+            WHEN "10" => muxOut <= muxIn_2;
+            WHEN OTHERS  => muxOut <= muxIn_3;
          END CASE;
       END IF;
-   END PROCESS make_mux;
-END PlatformIndependent;
+   END PROCESS makeMux;
+
+END platformIndependent;

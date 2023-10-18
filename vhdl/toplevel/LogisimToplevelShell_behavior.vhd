@@ -1,55 +1,65 @@
 --==============================================================================
---== Logisim goes FPGA automatic generated VHDL code                          ==
+--== Logisim-evolution goes FPGA automatic generated VHDL code                ==
+--== https://github.com/logisim-evolution/                                    ==
 --==                                                                          ==
 --==                                                                          ==
 --== Project   : computer_fpga                                                ==
---== Component : LogisimToplevelShell                                         ==
+--== Component : logisimTopLevelShell                                         ==
 --==                                                                          ==
 --==============================================================================
 
-ARCHITECTURE PlatformIndependent OF LogisimToplevelShell IS 
+ARCHITECTURE platformIndependent OF logisimTopLevelShell IS 
 
    -----------------------------------------------------------------------------
    -- Here all used components are defined                                    --
    -----------------------------------------------------------------------------
-   COMPONENT computer
-      PORT ( LOGISIM_INPUT_BUBBLES     : IN  std_logic_vector( 0 DOWNTO 0 );
-             clk                       : IN  std_logic;
-             computer_output           : OUT std_logic_vector( 7 DOWNTO 0 ));
-   END COMPONENT;
+      COMPONENT main
+         PORT ( clk                 : IN  std_logic;
+                input_pins          : IN  std_logic_vector( 7 DOWNTO 0 );
+                logisimInputBubbles : IN  std_logic_vector( 10 DOWNTO 0 );
+                output_pins         : OUT std_logic_vector( 7 DOWNTO 0 ) );
+      END COMPONENT;
 
-
-   -----------------------------------------------------------------------------
-   -- Here all used signals are defined                                       --
-   -----------------------------------------------------------------------------
-   SIGNAL s_LOGISIM_INPUT_BUBBLES            : std_logic_vector( 0 DOWNTO 0 );
-   SIGNAL s_clk                              : std_logic;
-   SIGNAL s_computer_output                  : std_logic_vector( 7 DOWNTO 0 );
+--------------------------------------------------------------------------------
+-- All used signals are defined here                                          --
+--------------------------------------------------------------------------------
+   SIGNAL s_clk                 : std_logic;
+   SIGNAL s_input_pins          : std_logic_vector( 7 DOWNTO 0 );
+   SIGNAL s_logisimInputBubbles : std_logic_vector( 10 DOWNTO 0 );
+   SIGNAL s_output_pins         : std_logic_vector( 7 DOWNTO 0 );
 
 BEGIN
-   -----------------------------------------------------------------------------
-   -- Here all signal adaptations are performed                               --
-   -----------------------------------------------------------------------------
-   s_clk <= FPGA_INPUT_PIN_1;
-   FPGA_OUTPUT_PIN_0 <= s_computer_output(0);
-   FPGA_OUTPUT_PIN_1 <= s_computer_output(1);
-   FPGA_OUTPUT_PIN_2 <= s_computer_output(2);
-   FPGA_OUTPUT_PIN_3 <= s_computer_output(3);
-   FPGA_OUTPUT_PIN_4 <= s_computer_output(4);
-   FPGA_OUTPUT_PIN_5 <= s_computer_output(5);
-   FPGA_OUTPUT_PIN_6 <= s_computer_output(6);
-   FPGA_OUTPUT_PIN_7 <= s_computer_output(7);
-   -----------------------------------------------------------------------------
-   -- Here all inlined adaptations are performed                              --
-   -----------------------------------------------------------------------------
-   s_LOGISIM_INPUT_BUBBLES(0) <= FPGA_INPUT_PIN_0;
 
-   -----------------------------------------------------------------------------
-   -- Here the toplevel component is connected                                --
-   -----------------------------------------------------------------------------
-   computer_0 : computer
-      PORT MAP ( LOGISIM_INPUT_BUBBLES              => s_LOGISIM_INPUT_BUBBLES,
-                 clk                                => s_clk,
-                 computer_output                    => s_computer_output);
+   --------------------------------------------------------------------------------
+   -- All signal adaptations are performed here                                  --
+   --------------------------------------------------------------------------------
+   s_clk                     <= '0';
+   s_input_pins(0)           <= '0';
+   s_input_pins(1)           <= '0';
+   s_input_pins(2)           <= '0';
+   s_input_pins(3)           <= '0';
+   s_input_pins(4)           <= '0';
+   s_input_pins(5)           <= '0';
+   s_input_pins(6)           <= '0';
+   s_input_pins(7)           <= '0';
+   s_logisimInputBubbles(0)  <= '0';
+   s_logisimInputBubbles(1)  <= '0';
+   s_logisimInputBubbles(10) <= '0';
+   s_logisimInputBubbles(2)  <= '0';
+   s_logisimInputBubbles(3)  <= '0';
+   s_logisimInputBubbles(4)  <= '0';
+   s_logisimInputBubbles(5)  <= '0';
+   s_logisimInputBubbles(6)  <= '0';
+   s_logisimInputBubbles(7)  <= '0';
+   s_logisimInputBubbles(8)  <= '0';
+   s_logisimInputBubbles(9)  <= '0';
 
-END PlatformIndependent;
+   --------------------------------------------------------------------------------
+   -- The toplevel component is connected here                                   --
+   --------------------------------------------------------------------------------
+   CIRCUIT_0 : main
+      PORT MAP ( clk                 => s_clk,
+                 input_pins          => s_input_pins,
+                 logisimInputBubbles => s_logisimInputBubbles,
+                 output_pins         => s_output_pins );
+END platformIndependent;
