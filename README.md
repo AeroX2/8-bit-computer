@@ -1,3 +1,7 @@
+# Notice (mostly for me)
+This is the old repo just for the Logisim version, if you are looking for the TinyTapeout version it is here
+[Link](https://github.com/AeroX2/tt06-jrb8-computer)
+
 # 8-Bit Computer
 An 8-bit computer designed in Logisim.
 
